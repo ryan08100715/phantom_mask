@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Str;
 
 class PharmacyMask extends Model
 {
@@ -21,5 +24,19 @@ class PharmacyMask extends Model
     public function pharmacy(): BelongsTo
     {
         return $this->belongsTo(Pharmacy::class, 'pharmacy_id', 'id');
+    }
+
+    /**
+     * 根據 JSON API 規範的 sort 格式進行解析與套用
+     */
+    #[Scope]
+    public function applySort(Builder $query, string $sort): void
+    {
+        foreach (explode(',', $sort) as $field) {
+            $direction = Str::startsWith($field, '-') ? 'desc' : 'asc';
+            $column = Str::ltrim($field, '-');
+
+            $query->orderBy($column, $direction);
+        }
     }
 }
