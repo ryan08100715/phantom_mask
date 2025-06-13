@@ -28,6 +28,11 @@ class PharmacyController extends Controller
         $time = $request->safe()->input('filter.time');
         $dayOfWeek = $request->safe()->enums('filter.dayOfWeek', DayOfWeek::class);
 
+        // 如果沒有傳遞篩選參數則直接返回藥局列表
+        if (! $time && ! $dayOfWeek) {
+            return PharmacyResource::collection(Pharmacy::all());
+        }
+
         // 查詢藥局營業時間
         $query = PharmacyOpeningHour::select('pharmacy_id');
 
