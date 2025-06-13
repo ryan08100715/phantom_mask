@@ -64,6 +64,8 @@ class PharmacyController extends Controller
      *
      * 透過藥局名稱、口罩價格、符合條件的口罩數量來搜尋藥局。
      */
+    #[ResponseFromApiResource(PharmacyResource::class, Pharmacy::class, 200, collection: true)]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
     public function search(SearchPharmaciesRequest $request): ResourceCollection
     {
         // 獲取請求參數

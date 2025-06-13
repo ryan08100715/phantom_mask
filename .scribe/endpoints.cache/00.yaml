@@ -136,6 +136,162 @@ endpoints:
   -
     httpMethods:
       - GET
+    uri: api/pharmacies/search
+    metadata:
+      groupName: Pharmacy
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 搜尋藥局
+      description: 透過藥局名稱、口罩價格、符合條件的口罩數量來搜尋藥局。
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      mask_price_min:
+        name: mask_price_min
+        description: 限制口罩最低價格，最小為0。
+        required: false
+        example: 2.3
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mask_price_max:
+        name: mask_price_max
+        description: '限制口罩最高價格，最小為0，若有傳遞 mask_price_min 則必須大於 mask_price_min。'
+        required: false
+        example: 13.6
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mask_count_min:
+        name: mask_count_min
+        description: 限制符合條件的口罩最低數量，最小為0。
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mask_count_max:
+        name: mask_count_max
+        description: '限制符合條件的口罩最高數量，最小為0，若有傳遞 mask_count_min 則必須大於 mask_count_min。'
+        required: false
+        example: 10
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 按口罩名稱搜尋，長度為1~50。
+        required: false
+        example: first
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      mask_price_min: 2.3
+      mask_price_max: 13.6
+      mask_count_min: 1
+      mask_count_max: 10
+      name: first
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":"01jxmtwr1yrcb25amz6djf3sxq","name":"DFW Wellness","cash_balance":328.41,"created_at":"2025-06-13T14:25:25.000000Z","updated_at":"2025-06-13T14:25:25.000000Z"},{"id":"01jxmtwr1yrcb25amz6djf3sxq","name":"DFW Wellness","cash_balance":328.41,"created_at":"2025-06-13T14:25:25.000000Z","updated_at":"2025-06-13T14:25:25.000000Z"}]}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+              "message": "The stock quantity field must be an integer.",
+              "errors": [
+                  {
+                      "code": "invalid_format",
+                      "detail": "The stock quantity field must be an integer."
+                  }
+              ]
+          }
+        headers: []
+        description: 參數格式錯誤
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 藥局ID
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 藥局名稱
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      cash_balance:
+        name: cash_balance
+        description: 現金餘額
+        required: true
+        example: null
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      created_at:
+        name: created_at
+        description: '建立時間，格式為 ISO 8601'
+        required: true
+        example: '2025-06-10T06:40:53.000000Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      updated_at:
+        name: updated_at
+        description: '最後更新時間，格式為 ISO 8601'
+        required: true
+        example: '2025-06-10T06:40:53.000000Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
     uri: 'api/pharmacies/{pharmacy_id}/masks'
     metadata:
       groupName: Pharmacy
