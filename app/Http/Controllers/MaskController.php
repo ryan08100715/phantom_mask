@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetPharmacyMasksRequest;
+use App\Http\Requests\UpdateMaskRequest;
 use App\Http\Requests\UpsertPharmacyMasksRequest;
 use App\Http\Resources\PharmacyMaskResource;
 use App\Models\Pharmacy;
 use App\Models\PharmacyMask;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -18,6 +20,21 @@ use Knuckles\Scribe\Attributes\ResponseFromFile;
 #[Group('Mask')]
 class MaskController extends Controller
 {
+    /**
+     * 更新口罩庫存數量
+     */
+    public function update(UpdateMaskRequest $request, PharmacyMask $mask): JsonResource
+    {
+        // 獲取請求參數
+        $stockQuantity = $request->safe()->integer('stock_quantity');
+
+        // 更新庫存
+        $mask->stock_quantity = $stockQuantity;
+        $mask->save();
+
+        return new PharmacyMaskResource($mask);
+    }
+
     /**
      * 獲取某間藥局的口罩販售清單
      *
