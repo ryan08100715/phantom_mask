@@ -8,7 +8,11 @@ use App\Http\Resources\PharmacyResource;
 use App\Models\Pharmacy;
 use App\Models\PharmacyOpeningHour;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Knuckles\Scribe\Attributes\ResponseFromFile;
 
+#[Group('Pharmacy')]
 class PharmacyController extends Controller
 {
     /**
@@ -16,6 +20,8 @@ class PharmacyController extends Controller
      *
      * 獲取藥局清單，可根據特定營業時間或營業日進行過濾。
      */
+    #[ResponseFromApiResource(PharmacyResource::class, Pharmacy::class, 200, collection: true)]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
     public function index(IndexPharmaciesRequest $request): ResourceCollection
     {
         // 獲取請求參數

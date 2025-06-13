@@ -1,0 +1,9 @@
+{
+    "message": "The stock quantity field must be an integer.",
+    "errors": [
+        {
+            "code": "invalid_format",
+            "detail": "The stock quantity field must be an integer."
+        }
+    ]
+}

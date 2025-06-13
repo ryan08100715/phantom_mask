@@ -6,7 +6,13 @@ use App\Enums\DayOfWeek;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
+use Knuckles\Scribe\Attributes\QueryParam;
 
+/**
+ * Query parameters
+ */
+#[QueryParam('filter[time]', type: 'string', description: '根據營業時間進行過濾，時間以 UTC 為主。', required: false, example: '21:00')]
+#[QueryParam('filter[dayOfWeek]', type: 'string', description: '根據營業日進行過濾，如果多個請用「,」分隔。', required: false, example: 'Monday,Tuesday', enum: DayOfWeek::class)]
 class IndexPharmaciesRequest extends FormRequest
 {
     public function rules(): array
