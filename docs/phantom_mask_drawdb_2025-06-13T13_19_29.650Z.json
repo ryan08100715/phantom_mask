@@ -1,0 +1,619 @@
+{
+  "tables": [
+    {
+      "id": "dfygPnks_MQmu692AdYpi",
+      "name": "pharmacies",
+      "x": -272.34169219970715,
+      "y": -261.3828026580812,
+      "locked": false,
+      "fields": [
+        {
+          "name": "id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "ULID",
+          "id": "Lb08Fc4rzkN6mGlAC1Tuy",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "QM4j79jWqddriYd13THbL",
+          "name": "name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "藥局名稱",
+          "size": 50
+        },
+        {
+          "id": "T01XV9abGdypeVvFKmsKX",
+          "name": "cash_balance",
+          "type": "DECIMAL",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "10,2"
+        },
+        {
+          "id": "ZmKFBptM7N6S5PiF6OeXU",
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "qUW15jGjLXswa6LlZ3F_8",
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "藥局",
+      "indices": [
+        {
+          "id": 0,
+          "name": "pharmacies_fulltext",
+          "unique": false,
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "color": "#175e7a"
+    },
+    {
+      "id": "7SFWl3Nf2eIW9OCRPymmK",
+      "name": "pharmacy_opening_hours",
+      "x": 73.1084199523927,
+      "y": -259.9127241516113,
+      "locked": false,
+      "fields": [
+        {
+          "name": "id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "ULID",
+          "id": "gafPONtuJ1gN1kMKgbhi0",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "0nLrLuJLzeS6qd0FuRtAN",
+          "name": "pharmacy_id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "藥局ID",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "pfosAeVg4qLzl4L3iVTRg",
+          "name": "day_of_week",
+          "type": "ENUM",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "星期幾",
+          "values": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ]
+        },
+        {
+          "id": "uvC8GzEGqU9-9Wtjr0ZE1",
+          "name": "start_time",
+          "type": "TIME",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "開始時間",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "sMMtLjbuen6hRR-nH4luc",
+          "name": "end_time",
+          "type": "TIME",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "結束時間",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "aGL0ucrkv4wJReQzvufJG",
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "F00Pr-VnEEvKbyPNjrkX-",
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "藥局營業時間",
+      "indices": [
+        {
+          "id": 0,
+          "name": "pharmacy_opening_hours_index_0",
+          "unique": false,
+          "fields": [
+            "pharmacy_id"
+          ]
+        },
+        {
+          "id": 1,
+          "name": "pharmacy_opening_hours_index_1",
+          "unique": false,
+          "fields": [
+            "pharmacy_id",
+            "day_of_week",
+            "start_time",
+            "end_time"
+          ]
+        }
+      ],
+      "color": "#175e7a"
+    },
+    {
+      "id": "cYkOTRQA5xq_gorCXtKaw",
+      "name": "pharmacy_masks",
+      "x": -587.6566921997069,
+      "y": -259.91275779724106,
+      "locked": true,
+      "fields": [
+        {
+          "name": "id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "ULID",
+          "id": "M1h7HL8_9-KVQAgG7P1_g",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "rTxydyAFG7j3H-oSSv2Q-",
+          "name": "pharmacy_id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "藥局ID",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "skg6C4gQNN8qaRrEBxwRR",
+          "name": "name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "口罩名稱",
+          "size": 100
+        },
+        {
+          "id": "HtX-q3P6aQjJFEi8VFI7t",
+          "name": "price",
+          "type": "DECIMAL",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "口罩價格",
+          "size": "10,2"
+        },
+        {
+          "id": "roYFdc5Ldl5XrdMlCkr0J",
+          "name": "stock_quantity",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "庫存數量",
+          "size": "",
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "8PQvBuSSZC184NDeHWiST",
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "0Al5oKK3NVtWA38IoJoGP",
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "藥局口罩",
+      "indices": [
+        {
+          "id": 0,
+          "name": "pharmacy_masks_index_0",
+          "unique": false,
+          "fields": [
+            "pharmacy_id"
+          ]
+        },
+        {
+          "id": 1,
+          "name": "pharmacy_masks_index_1",
+          "unique": false,
+          "fields": [
+            "pharmacy_id",
+            "price"
+          ]
+        },
+        {
+          "id": 2,
+          "name": "pharmacy_masks_fulltext",
+          "unique": false,
+          "fields": [
+            "name"
+          ]
+        }
+      ],
+      "color": "#175e7a"
+    },
+    {
+      "id": "1sEnfyCs6AhyQKQLWwwLV",
+      "name": "users",
+      "x": -335.5516697692871,
+      "y": 98.76738800048822,
+      "locked": false,
+      "fields": [
+        {
+          "name": "id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "ULID",
+          "id": "t--bhM0PtGyQRDcgP5cK5",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "JXo2_qRwQnlBiBno__N45",
+          "name": "name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "使用者名稱",
+          "size": 50
+        },
+        {
+          "id": "74C7ioqixx4P1Jy4rdMGc",
+          "name": "cash_balance",
+          "type": "DECIMAL",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "10,2"
+        },
+        {
+          "id": "CUaaWdwu-D-J4o_ez8bv_",
+          "name": "created_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        },
+        {
+          "id": "5mK3-nfez_76zWaRoZUR6",
+          "name": "updated_at",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "使用者",
+      "indices": [],
+      "color": "#e0bf1b"
+    },
+    {
+      "id": "Pgin7Da6VP_Q8fU4nh9Cq",
+      "name": "user_purchase_histories",
+      "x": -5.536624908447152,
+      "y": 105.38225341796871,
+      "locked": false,
+      "fields": [
+        {
+          "name": "id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": true,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "ULID",
+          "id": "bfuiQYwDY9s6T7Ag5JRVQ",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "A1XXnWL62Bgb0UdweQiYg",
+          "name": "user_id",
+          "type": "CHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "使用者ID",
+          "size": 26,
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "vaqSMN-G2k_4JH3Fz4irx",
+          "name": "pharmacy_name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "藥局名稱",
+          "size": 50
+        },
+        {
+          "id": "jPnzQV9f7nyOt9sDQtGMA",
+          "name": "mask_name",
+          "type": "VARCHAR",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "口罩名稱",
+          "size": 100
+        },
+        {
+          "id": "cXwFv05vT_0zyZei_YXTQ",
+          "name": "transaction_amount",
+          "type": "DECIMAL",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "交易金額",
+          "size": "10,2"
+        },
+        {
+          "id": "VczW4rf6V89zQuMzWle9Z",
+          "name": "transaction_quantity",
+          "type": "INTEGER",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "交易數量",
+          "size": "",
+          "values": [],
+          "unsigned": true
+        },
+        {
+          "id": "kr_HVdA2XaAWLaeUT8yxE",
+          "name": "transaction_datetime",
+          "type": "TIMESTAMP",
+          "default": "",
+          "check": "",
+          "primary": false,
+          "unique": false,
+          "notNull": true,
+          "increment": false,
+          "comment": "交易日期",
+          "size": "",
+          "values": []
+        }
+      ],
+      "comment": "使用者購買紀錄",
+      "indices": [
+        {
+          "id": 0,
+          "name": "user_purchase_histories_index_0",
+          "unique": false,
+          "fields": [
+            "user_id"
+          ]
+        },
+        {
+          "id": 1,
+          "name": "user_purchase_histories_index_1",
+          "unique": false,
+          "fields": [
+            "user_id",
+            "transaction_datetime",
+            "transaction_amount"
+          ]
+        }
+      ],
+      "color": "#e0bf1b"
+    }
+  ],
+  "relationships": [
+    {
+      "startTableId": "dfygPnks_MQmu692AdYpi",
+      "startFieldId": "Lb08Fc4rzkN6mGlAC1Tuy",
+      "endTableId": "7SFWl3Nf2eIW9OCRPymmK",
+      "endFieldId": "0nLrLuJLzeS6qd0FuRtAN",
+      "cardinality": "one_to_many",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Cascade",
+      "name": "fk_pharmacies_id_pharmacy_opening_hours",
+      "id": 0
+    },
+    {
+      "startTableId": "dfygPnks_MQmu692AdYpi",
+      "startFieldId": "Lb08Fc4rzkN6mGlAC1Tuy",
+      "endTableId": "cYkOTRQA5xq_gorCXtKaw",
+      "endFieldId": "rTxydyAFG7j3H-oSSv2Q-",
+      "cardinality": "one_to_many",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Cascade",
+      "name": "fk_pharmacies_id_pharmacy_masks",
+      "id": 1
+    },
+    {
+      "startTableId": "1sEnfyCs6AhyQKQLWwwLV",
+      "startFieldId": "t--bhM0PtGyQRDcgP5cK5",
+      "endTableId": "Pgin7Da6VP_Q8fU4nh9Cq",
+      "endFieldId": "A1XXnWL62Bgb0UdweQiYg",
+      "cardinality": "one_to_many",
+      "updateConstraint": "Cascade",
+      "deleteConstraint": "Cascade",
+      "name": "fk_users_id_user_purchase_histories",
+      "id": 2
+    }
+  ],
+  "notes": [],
+  "subjectAreas": [],
+  "database": "mysql",
+  "title": "phantom_mask"
+}
