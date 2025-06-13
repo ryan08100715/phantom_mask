@@ -1,0 +1,9 @@
+{
+    "message": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4",
+    "errors": [
+        {
+            "code": "resource_not_found",
+            "detail": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4"
+        }
+    ]
+}
