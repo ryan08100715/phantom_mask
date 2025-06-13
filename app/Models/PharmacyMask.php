@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 
 class PharmacyMask extends Model
@@ -38,5 +39,23 @@ class PharmacyMask extends Model
 
             $query->orderBy($column, $direction);
         }
+    }
+
+    /**
+     * 根據搜尋條件進行過濾
+     */
+    #[Scope]
+    public function search(Builder $query, array $filters): void
+    {
+        $name = Arr::get($filters, 'name');
+
+        $query
+            // 有口罩名稱條件則過濾並排序
+            ->when($name, function ($query) use ($name) {
+                $query
+                    ->selectRaw('match (`name`) against (?) as relevance_score', [$name])
+                    ->whereRaw('match (`name`) against (?)', [$name])
+                    ->orderBy('relevance_score', 'desc');
+            });
     }
 }

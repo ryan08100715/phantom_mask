@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetPharmacyMasksRequest;
+use App\Http\Requests\SearchMasksRequest;
 use App\Http\Requests\UpdateMaskRequest;
 use App\Http\Requests\UpsertPharmacyMasksRequest;
 use App\Http\Resources\PharmacyMaskResource;
@@ -36,6 +37,25 @@ class MaskController extends Controller
         $mask->save();
 
         return new PharmacyMaskResource($mask);
+    }
+
+    /**
+     * 搜尋口罩
+     *
+     * 可以透過口罩名稱進行搜尋。
+     */
+    public function search(SearchMasksRequest $request): ResourceCollection
+    {
+        // 獲取請求參數
+        $filters = $request->validated();
+
+        // 搜尋口罩
+        $masks = PharmacyMask::query()
+            ->select()
+            ->search($filters)
+            ->get();
+
+        return PharmacyMaskResource::collection($masks);
     }
 
     /**

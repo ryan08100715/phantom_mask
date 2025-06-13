@@ -8,6 +8,7 @@ Route::get('/pharmacies', [PharmacyController::class, 'index']);
 Route::get('/pharmacies/{pharmacy}/masks', [MaskController::class, 'getPharmacyMasks']);
 Route::post('/pharmacies/{pharmacy}/masks/batch', [MaskController::class, 'upsertPharmacyMasks']);
 
+Route::get('/masks/search', [MaskController::class, 'search']);
 Route::patch('/masks/{mask}', [MaskController::class, 'update']);
 
 Route::get('/users/top-spenders', [UserController::class, 'getTopSpenders']);
