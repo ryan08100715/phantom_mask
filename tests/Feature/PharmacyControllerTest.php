@@ -2,8 +2,10 @@
 
 use App\Enums\DayOfWeek;
 use App\Models\Pharmacy;
+use App\Models\PharmacyMask;
 use App\Models\PharmacyOpeningHour;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 uses(RefreshDatabase::class);
 
@@ -106,5 +108,112 @@ describe('獲取藥局清單 API', function () {
         $response
             ->assertStatus(422)
             ->assertJsonFragment(['code' => 'invalid_format']);
+    });
+});
+
+describe('搜尋藥局', function () {
+    beforeEach(function () {
+        // 創建測試藥局
+        $this->pharmacyA = Pharmacy::factory()->create([
+            'name' => 'First Care Rx',
+        ]);
+
+        $this->pharmacyB = Pharmacy::factory()->create([
+            'name' => 'First Pharmacy',
+        ]);
+
+        // 創建口罩資料
+        PharmacyMask::factory()->for($this->pharmacyA)->create([
+            'name' => 'MaskT (green) (10 per pack)',
+            'price' => 50,
+            'stock_quantity' => 100,
+        ]);
+
+        PharmacyMask::factory()->for($this->pharmacyB)->create([
+            'name' => 'Cotton Kiss (black) (10 per pack)',
+            'price' => 20,
+            'stock_quantity' => 200,
+        ]);
+    });
+
+    test('根據藥局關鍵字搜尋', function () {
+        // Arrange
+        $data = [
+            'first' => 2,
+            'Care' => 1,
+        ];
+
+        foreach ($data as $keyword => $expectedCount) {
+            // Act
+            $response = $this->getJson('/api/pharmacies/search?'.http_build_query([
+                'name' => $keyword,
+            ]));
+
+            // Assert
+            $response
+                ->assertOk()
+                ->assertJsonCount($expectedCount, 'data')
+                ->assertJsonStructure([
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'name',
+                            'cash_balance',
+                            'created_at',
+                            'updated_at',
+                        ],
+                    ],
+                ]);
+        }
+    });
+
+    test('可以根據口罩價格範圍搜尋', function () {
+        // Act
+        $response = $this->getJson('/api/pharmacies/search?'.http_build_query([
+            'mask_price_max' => 30,
+        ]));
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJsonCount(1, 'data')
+            ->assertJson(fn (AssertableJson $json) => $json
+                ->has('data.0', fn (AssertableJson $json) => $json
+                    ->where('name', $this->pharmacyB->name)
+                    ->etc()
+                )
+            );
+    });
+
+    test('價格範圍驗證', function () {
+        // Act
+        $response = $this->getJson('/api/pharmacies/search?'.http_build_query([
+            'mask_price_min' => -1,
+        ]));
+
+        // Assert
+        $response
+            ->assertStatus(422)
+            ->assertJsonFragment(['code' => 'invalid_format']);
+    });
+
+    test('搜尋結果包含完整的藥局資訊', function () {
+        // Act
+        $response = $this->getJson('/api/pharmacies/search');
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'cash_balance',
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+            ]);
     });
 });
