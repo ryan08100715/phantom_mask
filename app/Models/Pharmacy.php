@@ -20,4 +20,9 @@ class Pharmacy extends Model
     {
         return $this->hasMany(PharmacyMask::class, 'pharmacy_id', 'id');
     }
+
+    public function openingHours(): HasMany
+    {
+        return $this->hasMany(PharmacyOpeningHour::class, 'pharmacy_id', 'id');
+    }
 }
