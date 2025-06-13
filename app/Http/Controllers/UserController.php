@@ -7,7 +7,11 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserPurchaseHistory;
 use Illuminate\Http\Resources\Json\ResourceCollection;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\ResponseField;
+use Knuckles\Scribe\Attributes\ResponseFromFile;
 
+#[Group('User')]
 class UserController extends Controller
 {
     /**
@@ -15,6 +19,14 @@ class UserController extends Controller
      *
      * 查詢特定時段口罩消費金額最高的 N 個使用者。
      */
+    #[ResponseFromFile('storage/responses/get_top_spenders.json', status: 200)]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
+    #[ResponseField('id', type: 'string', description: '使用者ID', required: true)]
+    #[ResponseField('name', type: 'string', description: '使用者名稱', required: true)]
+    #[ResponseField('cash_balance', type: 'number', description: '現金餘額', required: true)]
+    #[ResponseField('created_at', type: 'string', description: '建立時間，格式為 ISO 8601', required: true, example: '2025-06-10T06:40:53.000000Z')]
+    #[ResponseField('updated_at', type: 'string', description: '最後更新時間，格式為 ISO 8601', required: true, example: '2025-06-10T06:40:53.000000Z')]
+    #[ResponseField('total_spending', type: 'number', description: '總花費金額', required: true, example: 47.5)]
     public function getTopSpenders(GetTopSpendersRequest $request): ResourceCollection
     {
         // 獲取請求參數
@@ -28,9 +40,9 @@ class UserController extends Controller
             ->joinSub(
                 UserPurchaseHistory::query()
                     ->topSpenders(
-                        $count,
                         $startDateTime,
-                        $endDateTime
+                        $endDateTime,
+                        $count,
                     ),
                 'top_spenders',
                 'users.id',

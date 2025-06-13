@@ -1,0 +1,28 @@
+{
+    "data": [
+        {
+            "id": "01jxhbsm77aaa2arkz3gsb5vrw",
+            "name": "Wilbert Love",
+            "cash_balance": 587.93,
+            "created_at": "2025-06-12T06:03:50.000000Z",
+            "updated_at": "2025-06-12T10:02:42.000000Z",
+            "total_spending": 412.07
+        },
+        {
+            "id": "01jxhbskw2dpz2wbnv1r8rhpew",
+            "name": "Yvonne Guerrero",
+            "cash_balance": 42.67,
+            "created_at": "2025-06-12T06:03:50.000000Z",
+            "updated_at": "2025-06-12T08:33:50.000000Z",
+            "total_spending": 211.26
+        },
+        {
+            "id": "01jxhbskx8hwjvqj3cbfy715e5",
+            "name": "Lester Arnold",
+            "cash_balance": 234.84,
+            "created_at": "2025-06-12T06:03:50.000000Z",
+            "updated_at": "2025-06-12T06:03:50.000000Z",
+            "total_spending": 165.16
+        }
+    ]
+}
