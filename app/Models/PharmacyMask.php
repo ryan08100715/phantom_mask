@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\DatabaseHelper;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -52,10 +53,14 @@ class PharmacyMask extends Model
         $query
             // 有口罩名稱條件則過濾並排序
             ->when($name, function ($query) use ($name) {
-                $query
-                    ->selectRaw('match (`name`) against (?) as relevance_score', [$name])
-                    ->whereRaw('match (`name`) against (?)', [$name])
-                    ->orderBy('relevance_score', 'desc');
+                if (DatabaseHelper::isSupportFulltext()) {
+                    $query
+                        ->selectRaw('match (`name`) against (?) as relevance_score', [$name])
+                        ->whereRaw('match (`name`) against (?)', [$name])
+                        ->orderBy('relevance_score', 'desc');
+                } else {
+                    $query->where('name', 'like', "%$name%");
+                }
             });
     }
 }

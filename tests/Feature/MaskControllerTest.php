@@ -294,6 +294,79 @@ describe('批量新增或更新藥局口罩', function () {
     });
 });
 
+describe('搜尋口罩', function () {
+    beforeEach(function () {
+        // 建立測試資料
+        $this->pharmacy = Pharmacy::factory()->create();
+
+        // 建立測試用的口罩資料
+        $this->masks = collect([
+            PharmacyMask::factory()->for($this->pharmacy)->create([
+                'name' => 'Second Smile (blue) (10 per pack)',
+                'price' => 25,
+                'stock_quantity' => 100,
+            ]),
+            PharmacyMask::factory()->for($this->pharmacy)->create([
+                'name' => 'Cotton Kiss (green) (10 per pack)',
+                'price' => 15,
+                'stock_quantity' => 200,
+            ]),
+            PharmacyMask::factory()->for($this->pharmacy)->create([
+                'name' => 'MaskT (green) (10 per pack)',
+                'price' => 10,
+                'stock_quantity' => 150,
+            ]),
+        ]);
+    });
+
+    test('沒有關鍵字時返回全部結果', function () {
+        // Act
+        $response = $this->getJson('/api/masks/search');
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJsonCount(3, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'price',
+                        'stock_quantity',
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+            ]);
+    });
+
+    test('使用關鍵字搜尋', function () {
+        // Arrange
+        $name = 'green';
+
+        // Act
+        $response = $this->getJson("/api/masks/search?name=$name");
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'price',
+                        'stock_quantity',
+                        'created_at',
+                        'updated_at',
+                    ],
+                ],
+            ]);
+    });
+});
+
 describe('更新口罩庫存數量', function () {
     beforeEach(function () {
         // 創建測試數據
