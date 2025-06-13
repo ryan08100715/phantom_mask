@@ -44,6 +44,8 @@ class MaskController extends Controller
      *
      * 可以透過口罩名稱進行搜尋。
      */
+    #[ResponseFromApiResource(PharmacyMaskResource::class, PharmacyMask::class, 200, collection: true)]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
     public function search(SearchMasksRequest $request): ResourceCollection
     {
         // 獲取請求參數
