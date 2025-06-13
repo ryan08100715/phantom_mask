@@ -23,6 +23,9 @@ class MaskController extends Controller
     /**
      * 更新口罩庫存數量
      */
+    #[ResponseFromApiResource(PharmacyMaskResource::class, PharmacyMask::class, 200)]
+    #[ResponseFromFile('storage/responses/exceptions/resource_not_found.json', status: 404, description: '口罩不存在')]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
     public function update(UpdateMaskRequest $request, PharmacyMask $mask): JsonResource
     {
         // 獲取請求參數
