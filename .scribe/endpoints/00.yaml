@@ -283,3 +283,196 @@ endpoints:
     method: null
     route: null
     custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/pharmacies/{pharmacy_id}/masks/batch'
+    metadata:
+      groupName: Pharmacy
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 批量新增或更新藥局口罩
+      description: 一次對某間藥局新增或更新多筆口罩資訊
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      pharmacy_id:
+        name: pharmacy_id
+        description: 'The ID of the pharmacy.'
+        required: true
+        example: 01jxmtwr1yrcb25amz6djf3sxq
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      pharmacy_id: 01jxmtwr1yrcb25amz6djf3sxq
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      '[]':
+        name: '[]'
+        description: '要新增或更新的口罩資訊，當有傳遞 id 時，則為更新。'
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].id':
+        name: '[].id'
+        description: 口罩ID，當有傳遞時，則為更新。
+        required: false
+        example: 01jxhbsskj2bnefbgfb4segeqg
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].name':
+        name: '[].name'
+        description: 口罩名稱，長度為1~100。
+        required: true
+        example: 'Second Smile (black) (10 per pack)'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].price':
+        name: '[].price'
+        description: 口罩價格，最小為0。
+        required: true
+        example: 12.4
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].stock_quantity':
+        name: '[].stock_quantity'
+        description: 口罩庫存數量，最小為0。
+        required: true
+        example: 8
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      -
+        id: 01jxhbsskj2bnefbgfb4segeqg
+        name: 'Second Smile (black) (10 per pack)'
+        price: 12.4
+        stock_quantity: 8
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":"01jxmtwr2c08gp4rz3pga6ghs6","name":"True Barrier (green) (3 per pack)","price":13.7,"stock_quantity":11,"created_at":"2025-06-13T14:25:25.000000Z","updated_at":"2025-06-13T14:25:25.000000Z"},{"id":"01jxmtwr2c08gp4rz3pga6ghs6","name":"True Barrier (green) (3 per pack)","price":13.7,"stock_quantity":11,"created_at":"2025-06-13T14:25:25.000000Z","updated_at":"2025-06-13T14:25:25.000000Z"}]}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 404
+        content: |
+          {
+              "message": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4",
+              "errors": [
+                  {
+                      "code": "resource_not_found",
+                      "detail": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4"
+                  }
+              ]
+          }
+        headers: []
+        description: 藥局或口罩不存在
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+              "message": "The stock quantity field must be an integer.",
+              "errors": [
+                  {
+                      "code": "invalid_format",
+                      "detail": "The stock quantity field must be an integer."
+                  }
+              ]
+          }
+        headers: []
+        description: 參數格式錯誤
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 口罩ID
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      name:
+        name: name
+        description: 口罩名稱
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      price:
+        name: price
+        description: 口罩價格
+        required: true
+        example: null
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      stock_quantity:
+        name: stock_quantity
+        description: 口罩庫存數量
+        required: true
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      created_at:
+        name: created_at
+        description: '建立時間，格式為 ISO 8601'
+        required: true
+        example: '2025-06-10T06:40:53.000000Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      updated_at:
+        name: updated_at
+        description: '最後更新時間，格式為 ISO 8601'
+        required: true
+        example: '2025-06-10T06:40:53.000000Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

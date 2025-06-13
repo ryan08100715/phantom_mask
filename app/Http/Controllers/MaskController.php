@@ -48,6 +48,10 @@ class MaskController extends Controller
      *
      * 一次對某間藥局新增或更新多筆口罩資訊
      */
+    #[Group('Pharmacy')]
+    #[ResponseFromApiResource(PharmacyMaskResource::class, PharmacyMask::class, 200, collection: true)]
+    #[ResponseFromFile('storage/responses/exceptions/resource_not_found.json', status: 404, description: '藥局或口罩不存在')]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
     public function upsertPharmacyMasks(UpsertPharmacyMasksRequest $request, Pharmacy $pharmacy): ResourceCollection
     {
         // 獲取請求參數
