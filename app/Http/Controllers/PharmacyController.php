@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\DayOfWeek;
 use App\Http\Requests\IndexPharmaciesRequest;
+use App\Http\Requests\SearchPharmaciesRequest;
 use App\Http\Resources\PharmacyResource;
 use App\Models\Pharmacy;
 use App\Models\PharmacyOpeningHour;
@@ -54,6 +55,24 @@ class PharmacyController extends Controller
 
         // 取得藥局列表
         $pharmacies = Pharmacy::find($pharmacyIds);
+
+        return PharmacyResource::collection($pharmacies);
+    }
+
+    /**
+     * 搜尋藥局
+     *
+     * 透過藥局名稱、口罩價格、符合條件的口罩數量來搜尋藥局。
+     */
+    public function search(SearchPharmaciesRequest $request): ResourceCollection
+    {
+        // 獲取請求參數
+        $filters = $request->validated();
+
+        // 搜尋符合條件的藥局
+        $pharmacies = Pharmacy::query()
+            ->search($filters)
+            ->get();
 
         return PharmacyResource::collection($pharmacies);
     }
