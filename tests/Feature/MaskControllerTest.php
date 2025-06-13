@@ -3,6 +3,7 @@
 use App\Models\Pharmacy;
 use App\Models\PharmacyMask;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Testing\Fluent\AssertableJson;
 
 uses(RefreshDatabase::class);
 
@@ -290,5 +291,76 @@ describe('批量新增或更新藥局口罩', function () {
         $response
             ->assertNotFound()
             ->assertJsonFragment(['code' => 'resource_not_found']);
+    });
+});
+
+describe('更新口罩庫存數量', function () {
+    beforeEach(function () {
+        // 創建測試數據
+        $this->pharmacy = Pharmacy::factory()->create();
+        $this->mask = PharmacyMask::factory()->for($this->pharmacy)->create([
+            'name' => 'Test Mask',
+            'price' => 10,
+            'stock_quantity' => 100,
+        ]);
+    });
+
+    test('可以成功更新口罩庫存', function () {
+        // Act
+        $response = $this->patchJson("/api/masks/{$this->mask->id}", [
+            'stock_quantity' => 50,
+        ]);
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJson(fn (AssertableJson $json) => $json
+                ->has('data', fn (AssertableJson $json) => $json
+                    ->where('id', $this->mask->id)
+                    ->where('name', 'Test Mask')
+                    ->where('price', 10)
+                    ->where('stock_quantity', 50)
+                    ->etc()
+                )
+            );
+
+        // 驗證資料庫的資料已經更新
+        $this->assertDatabaseHas('pharmacy_masks', [
+            'id' => $this->mask->id,
+            'stock_quantity' => 50,
+        ]);
+    });
+
+    test('使用不存在的口罩 ID 时返回 404', function () {
+        // Arrange
+        $nonExistentId = 'non_existent_id';
+
+        // Act
+        $response = $this->patchJson("/api/masks/$nonExistentId", [
+            'stock_quantity' => 50,
+        ]);
+
+        // Assert
+
+        $response
+            ->assertNotFound()
+            ->assertJsonFragment(['code' => 'resource_not_found']);
+    });
+
+    test('庫存數量參數錯誤時，回傳 422 錯誤', function () {
+        // Arrange
+        $invalid = [null, -1, 2.5];
+
+        foreach ($invalid as $value) {
+            // Act
+            $response = $this->patchJson("/api/masks/{$this->mask->id}", [
+                'stock_quantity' => $value,
+            ]);
+
+            // Assert
+            $response
+                ->assertStatus(422)
+                ->assertJsonFragment(['code' => 'invalid_format']);
+        }
     });
 });
