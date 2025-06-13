@@ -72,6 +72,7 @@ class Pharmacy extends Model
         }
 
         $query
+            ->select()
             // 有藥局名稱條件則過濾並排序
             ->when($name, function ($query) use ($name) {
                 if (DatabaseHelper::isSupportFulltext()) {
