@@ -101,14 +101,20 @@ $ echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >>~/.bashrc
 $ git clone https://github.com/ryan08100715/phantom_mask.git
 ```
 
+#### 安裝依賴
+
+```bash
+$ composer install
+```
+
 #### Env 配置
 
-1. 將 `.env.example` 複製成 `.env` 並配置
-2. 產生 laravel 專案 key
+1. 複製 `.env.example` 成 `.env` 並配置
+2. 產生 Laravel 專案 key
     ```bash
     $ php artisan key:generate
     ```
-3. 設置資料庫相關環境變數，根據需求自行設置，資料庫使用 mysql
+3. 在 `.env` 中設置資料庫相關環境變數，根據需求自行設置，資料庫使用 mysql
     ```bash
     DB_CONNECTION=mysql
     DB_HOST=127.0.0.1
@@ -118,13 +124,7 @@ $ git clone https://github.com/ryan08100715/phantom_mask.git
     DB_PASSWORD=
     ```
 
-#### 安裝依賴
-
-```bash
-$ composer install
-```
-
-#### 資料庫設置
+#### 資料庫建置
 
 ```bash
 $ php artisan migrate
