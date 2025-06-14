@@ -54,7 +54,10 @@ $ php artisan import:users ./storage/data/users.json
 
 ## Test Coverage Report
 
-我為我建立的 API 編寫了 50 個測試(Unit + Feature)。請[點擊此處](storage/coverage/index.html)查看測試覆蓋率報告。
+我為我建立的 API 編寫了 50 個測試(Unit + Feature)。
+
+* 請[點擊此處](storage/coverage/test-coverage.jpg)查看測試覆蓋率圖檔。
+* 或打開 `storage/coverage/index.html` 查看測試覆蓋率報告。
 
 您可以使用以下命令執行測試：
 
