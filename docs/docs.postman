@@ -1,0 +1,522 @@
+{
+    "variable": [
+        {
+            "id": "baseUrl",
+            "key": "baseUrl",
+            "type": "string",
+            "name": "string",
+            "value": "http:\/\/localhost:8000"
+        }
+    ],
+    "info": {
+        "name": "PhantomMask API Documentation",
+        "_postman_id": "b0741887-aa7c-4c8b-b253-761b5e378a0f",
+        "description": "",
+        "schema": "https:\/\/schema.getpostman.com\/json\/collection\/v2.1.0\/collection.json"
+    },
+    "item": [
+        {
+            "name": "Pharmacy",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u7372\u53d6\u85e5\u5c40\u6e05\u55ae",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/pharmacies",
+                            "query": [
+                                {
+                                    "key": "filter%5Btime%5D",
+                                    "value": "21%3A00",
+                                    "description": "\u6839\u64da\u71df\u696d\u6642\u9593\u9032\u884c\u904e\u6ffe\uff0c\u6642\u9593\u4ee5 UTC \u70ba\u4e3b\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "filter%5BdayOfWeek%5D",
+                                    "value": "Monday%2CTuesday",
+                                    "description": "\u6839\u64da\u71df\u696d\u65e5\u9032\u884c\u904e\u6ffe\uff0c\u5982\u679c\u591a\u500b\u8acb\u7528\u300c,\u300d\u5206\u9694\u3002",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/pharmacies?filter%5Btime%5D=21%3A00&filter%5BdayOfWeek%5D=Monday%2CTuesday"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "\u7372\u53d6\u85e5\u5c40\u6e05\u55ae\uff0c\u53ef\u6839\u64da\u7279\u5b9a\u71df\u696d\u6642\u9593\u6216\u71df\u696d\u65e5\u9032\u884c\u904e\u6ffe\u3002",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtwr1yrcb25amz6djf3sxq\",\"name\":\"DFW Wellness\",\"cash_balance\":328.41,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T14:25:25.000000Z\"},{\"id\":\"01jxmtwr1yrcb25amz6djf3sxq\",\"name\":\"DFW Wellness\",\"cash_balance\":328.41,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T14:25:25.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u641c\u5c0b\u85e5\u5c40",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/pharmacies\/search",
+                            "query": [
+                                {
+                                    "key": "mask_price_min",
+                                    "value": "2.3",
+                                    "description": "\u9650\u5236\u53e3\u7f69\u6700\u4f4e\u50f9\u683c\uff0c\u6700\u5c0f\u70ba0\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mask_price_max",
+                                    "value": "13.6",
+                                    "description": "\u9650\u5236\u53e3\u7f69\u6700\u9ad8\u50f9\u683c\uff0c\u6700\u5c0f\u70ba0\uff0c\u82e5\u6709\u50b3\u905e mask_price_min \u5247\u5fc5\u9808\u5927\u65bc mask_price_min\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mask_count_min",
+                                    "value": "1",
+                                    "description": "\u9650\u5236\u7b26\u5408\u689d\u4ef6\u7684\u53e3\u7f69\u6700\u4f4e\u6578\u91cf\uff0c\u6700\u5c0f\u70ba0\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "mask_count_max",
+                                    "value": "10",
+                                    "description": "\u9650\u5236\u7b26\u5408\u689d\u4ef6\u7684\u53e3\u7f69\u6700\u9ad8\u6578\u91cf\uff0c\u6700\u5c0f\u70ba0\uff0c\u82e5\u6709\u50b3\u905e mask_count_min \u5247\u5fc5\u9808\u5927\u65bc mask_count_min\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "name",
+                                    "value": "first",
+                                    "description": "\u6309\u53e3\u7f69\u540d\u7a31\u641c\u5c0b\uff0c\u9577\u5ea6\u70ba1~50\u3002",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/pharmacies\/search?mask_price_min=2.3&mask_price_max=13.6&mask_count_min=1&mask_count_max=10&name=first"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "\u900f\u904e\u85e5\u5c40\u540d\u7a31\u3001\u53e3\u7f69\u50f9\u683c\u3001\u7b26\u5408\u689d\u4ef6\u7684\u53e3\u7f69\u6578\u91cf\u4f86\u641c\u5c0b\u85e5\u5c40\u3002",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtwr1yrcb25amz6djf3sxq\",\"name\":\"DFW Wellness\",\"cash_balance\":328.41,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T14:25:25.000000Z\"},{\"id\":\"01jxmtwr1yrcb25amz6djf3sxq\",\"name\":\"DFW Wellness\",\"cash_balance\":328.41,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T14:25:25.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u7372\u53d6\u67d0\u9593\u85e5\u5c40\u7684\u53e3\u7f69\u8ca9\u552e\u6e05\u55ae",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/pharmacies\/:pharmacy_id\/masks",
+                            "query": [
+                                {
+                                    "key": "sort",
+                                    "value": "price",
+                                    "description": "\u6392\u5e8f\u898f\u5247\uff0c\u4ee5\u300c-\u300d\u958b\u982d\u4ee3\u8868 desc\u3002",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/pharmacies\/:pharmacy_id\/masks?sort=price",
+                            "variable": [
+                                {
+                                    "id": "pharmacy_id",
+                                    "key": "pharmacy_id",
+                                    "value": "01jxmtwr1yrcb25amz6djf3sxq",
+                                    "description": "The ID of the pharmacy."
+                                }
+                            ]
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "\u6839\u64da\u85e5\u5c40ID\u4f86\u7372\u53d6\u8a72\u85e5\u5c40\u7684\u53e3\u7f69\u8ca9\u552e\u6e05\u55ae\uff0c\u53ef\u4f7f\u7528\u540d\u7a31\u6216\u50f9\u683c\u4f86\u6392\u5e8f\u3002",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"},{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\",\n    \"errors\": [\n        {\n            \"code\": \"resource_not_found\",\n            \"detail\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\"\n        }\n    ]\n}\n",
+                            "name": "\u85e5\u5c40\u4e0d\u5b58\u5728"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u6279\u91cf\u65b0\u589e\u6216\u66f4\u65b0\u85e5\u5c40\u53e3\u7f69",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/pharmacies\/:pharmacy_id\/masks\/batch",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/pharmacies\/:pharmacy_id\/masks\/batch",
+                            "variable": [
+                                {
+                                    "id": "pharmacy_id",
+                                    "key": "pharmacy_id",
+                                    "value": "01jxmtwr1yrcb25amz6djf3sxq",
+                                    "description": "The ID of the pharmacy."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[{\"id\":\"01jxhbsskj2bnefbgfb4segeqg\",\"name\":\"Second Smile (black) (10 per pack)\",\"price\":12.4,\"stock_quantity\":8}]"
+                        },
+                        "description": "\u4e00\u6b21\u5c0d\u67d0\u9593\u85e5\u5c40\u65b0\u589e\u6216\u66f4\u65b0\u591a\u7b46\u53e3\u7f69\u8cc7\u8a0a",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"},{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\",\n    \"errors\": [\n        {\n            \"code\": \"resource_not_found\",\n            \"detail\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\"\n        }\n    ]\n}\n",
+                            "name": "\u85e5\u5c40\u6216\u53e3\u7f69\u4e0d\u5b58\u5728"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Mask",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u641c\u5c0b\u53e3\u7f69",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/masks\/search",
+                            "query": [
+                                {
+                                    "key": "name",
+                                    "value": "green",
+                                    "description": "\u53e3\u7f69\u540d\u7a31\u95dc\u9375\u5b57\uff0c\u9577\u5ea6\u70ba1~100",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/masks\/search?name=green"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "\u53ef\u4ee5\u900f\u904e\u53e3\u7f69\u540d\u7a31\u9032\u884c\u641c\u5c0b\u3002",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"},{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u66f4\u65b0\u53e3\u7f69\u5eab\u5b58\u6578\u91cf",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/masks\/:mask_id",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/masks\/:mask_id",
+                            "variable": [
+                                {
+                                    "id": "mask_id",
+                                    "key": "mask_id",
+                                    "value": "01jxmtwr2c08gp4rz3pga6ghs6",
+                                    "description": "The ID of the mask."
+                                }
+                            ]
+                        },
+                        "method": "PATCH",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\"stock_quantity\":50}"
+                        },
+                        "description": "",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":{\"id\":\"01jxmtwr2c08gp4rz3pga6ghs6\",\"name\":\"True Barrier (green) (3 per pack)\",\"price\":13.7,\"stock_quantity\":50,\"created_at\":\"2025-06-13T14:25:25.000000Z\",\"updated_at\":\"2025-06-13T17:51:10.000000Z\"}}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\",\n    \"errors\": [\n        {\n            \"code\": \"resource_not_found\",\n            \"detail\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\"\n        }\n    ]\n}\n",
+                            "name": "\u53e3\u7f69\u4e0d\u5b58\u5728"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "User",
+            "description": "",
+            "item": [
+                {
+                    "name": "\u53d6\u5f97\u9ad8\u6d88\u8cbb\u4f7f\u7528\u8005",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/users\/top-spenders",
+                            "query": [
+                                {
+                                    "key": "count",
+                                    "value": "10",
+                                    "description": "\u67e5\u8a62\u6578\u91cf\uff0c\u6700\u5c0f\u70ba1\uff0c\u82e5\u6c92\u50b3\u905e\u5247\u9810\u8a2d\u70ba10\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "start_datetime",
+                                    "value": "2024-06-10T06%3A40%3A53.000000Z",
+                                    "description": "\u67e5\u8a62\u958b\u59cb\u6642\u9593\uff0c\u683c\u5f0f\u70ba ISO 8601\u3002",
+                                    "disabled": false
+                                },
+                                {
+                                    "key": "end_datetime",
+                                    "value": "2025-06-21T06%3A40%3A53.000000Z",
+                                    "description": "\u67e5\u8a62\u7d50\u675f\u6642\u9593\uff0c\u683c\u5f0f\u70ba ISO 8601\uff0c\u6642\u9593\u5fc5\u9808\u5927\u65bc start_datetime\u3002",
+                                    "disabled": false
+                                }
+                            ],
+                            "raw": "{{baseUrl}}\/api\/users\/top-spenders?count=10&start_datetime=2024-06-10T06%3A40%3A53.000000Z&end_datetime=2025-06-21T06%3A40%3A53.000000Z"
+                        },
+                        "method": "GET",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": null,
+                        "description": "\u67e5\u8a62\u7279\u5b9a\u6642\u6bb5\u53e3\u7f69\u6d88\u8cbb\u91d1\u984d\u6700\u9ad8\u7684 N \u500b\u4f7f\u7528\u8005\u3002",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\n    \"data\": [\n        {\n            \"id\": \"01jxhbsm77aaa2arkz3gsb5vrw\",\n            \"name\": \"Wilbert Love\",\n            \"cash_balance\": 587.93,\n            \"created_at\": \"2025-06-12T06:03:50.000000Z\",\n            \"updated_at\": \"2025-06-12T10:02:42.000000Z\",\n            \"total_spending\": 412.07\n        },\n        {\n            \"id\": \"01jxhbskw2dpz2wbnv1r8rhpew\",\n            \"name\": \"Yvonne Guerrero\",\n            \"cash_balance\": 42.67,\n            \"created_at\": \"2025-06-12T06:03:50.000000Z\",\n            \"updated_at\": \"2025-06-12T08:33:50.000000Z\",\n            \"total_spending\": 211.26\n        },\n        {\n            \"id\": \"01jxhbskx8hwjvqj3cbfy715e5\",\n            \"name\": \"Lester Arnold\",\n            \"cash_balance\": 234.84,\n            \"created_at\": \"2025-06-12T06:03:50.000000Z\",\n            \"updated_at\": \"2025-06-12T06:03:50.000000Z\",\n            \"total_spending\": 165.16\n        }\n    ]\n}\n",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                },
+                {
+                    "name": "\u4f7f\u7528\u8005\u8cfc\u8cb7",
+                    "request": {
+                        "url": {
+                            "host": "{{baseUrl}}",
+                            "path": "api\/users\/:user_id\/purchases",
+                            "query": [],
+                            "raw": "{{baseUrl}}\/api\/users\/:user_id\/purchases",
+                            "variable": [
+                                {
+                                    "id": "user_id",
+                                    "key": "user_id",
+                                    "value": "01jxmtw7nx7xthh9p7ha4bdkd2",
+                                    "description": "The ID of the user."
+                                }
+                            ]
+                        },
+                        "method": "POST",
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application\/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application\/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "[{\"mask_id\":\"01jxhbsswdpmmf5fgxv3h95egj\",\"quantity\":4}]"
+                        },
+                        "description": "\u4f7f\u7528\u8005\u53ef\u540c\u6642\u8cfc\u8cb7\u591a\u5bb6\u85e5\u5c40\u7684\u53e3\u7f69",
+                        "auth": {
+                            "type": "noauth"
+                        }
+                    },
+                    "response": [
+                        {
+                            "header": [],
+                            "code": 200,
+                            "body": "{\"data\":[{\"id\":\"01jxmtw7p4fdcs0jg22hxfdbga\",\"pharmacy_name\":\"Keystone Pharmacy\",\"mask_name\":\"True Barrier (green) (3 per pack)\",\"transaction_amount\":11.86,\"transaction_quantity\":1,\"transaction_datetime\":\"2024-12-24T15:18:51.000000Z\"},{\"id\":\"01jxmtw7p4fdcs0jg22hxfdbga\",\"pharmacy_name\":\"Keystone Pharmacy\",\"mask_name\":\"True Barrier (green) (3 per pack)\",\"transaction_amount\":11.86,\"transaction_quantity\":1,\"transaction_datetime\":\"2024-12-24T15:18:51.000000Z\"}]}",
+                            "name": ""
+                        },
+                        {
+                            "header": [],
+                            "code": 402,
+                            "body": "{\n    \"message\": \"\u73fe\u91d1\u9918\u984d\u4e0d\u8db3\",\n    \"errors\": [\n        {\n            \"code\": \"insufficient_cash_balance\",\n            \"detail\": \"\u73fe\u91d1\u9918\u984d\u4e0d\u8db3\"\n        }\n    ]\n}\n",
+                            "name": "\u73fe\u91d1\u9918\u984d\u4e0d\u8db3"
+                        },
+                        {
+                            "header": [],
+                            "code": 404,
+                            "body": "{\n    \"message\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\",\n    \"errors\": [\n        {\n            \"code\": \"resource_not_found\",\n            \"detail\": \"No query results for model [App\\\\Models\\\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4\"\n        }\n    ]\n}\n",
+                            "name": "\u4f7f\u7528\u8005\u4e0d\u5b58\u5728"
+                        },
+                        {
+                            "header": [],
+                            "code": 409,
+                            "body": "{\n    \"message\": \"\u5eab\u5b58\u4e0d\u8db3\",\n    \"errors\": [\n        {\n            \"code\": \"insufficient_stock\",\n            \"detail\": \"\u5eab\u5b58\u4e0d\u8db3\"\n        }\n    ]\n}\n",
+                            "name": "\u5eab\u5b58\u4e0d\u8db3"
+                        },
+                        {
+                            "header": [],
+                            "code": 422,
+                            "body": "{\n    \"message\": \"The stock quantity field must be an integer.\",\n    \"errors\": [\n        {\n            \"code\": \"invalid_format\",\n            \"detail\": \"The stock quantity field must be an integer.\"\n        }\n    ]\n}\n",
+                            "name": "\u53c3\u6578\u683c\u5f0f\u932f\u8aa4"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "auth": {
+        "type": "noauth"
+    }
+}

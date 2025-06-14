@@ -1,0 +1,1312 @@
+openapi: 3.0.3
+info:
+  title: 'PhantomMask API Documentation'
+  description: ''
+  version: 1.0.0
+servers:
+  -
+    url: 'http://localhost:8000'
+tags:
+  -
+    name: Pharmacy
+    description: ''
+  -
+    name: Mask
+    description: ''
+  -
+    name: User
+    description: ''
+paths:
+  /api/pharmacies:
+    get:
+      summary: 獲取藥局清單
+      operationId: ''
+      description: 獲取藥局清單，可根據特定營業時間或營業日進行過濾。
+      parameters:
+        -
+          in: query
+          name: 'filter[time]'
+          description: '根據營業時間進行過濾，時間以 UTC 為主。'
+          example: '21:00'
+          required: false
+          schema:
+            type: string
+            description: '根據營業時間進行過濾，時間以 UTC 為主。'
+            example: '21:00'
+            nullable: false
+        -
+          in: query
+          name: 'filter[dayOfWeek]'
+          description: '根據營業日進行過濾，如果多個請用「,」分隔。'
+          example: 'Monday,Tuesday'
+          required: false
+          schema:
+            type: string
+            description: '根據營業日進行過濾，如果多個請用「,」分隔。'
+            example: 'Monday,Tuesday'
+            nullable: false
+            enum:
+              - Monday
+              - Tuesday
+              - Wednesday
+              - Thursday
+              - Friday
+              - Saturday
+              - Sunday
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtwr1yrcb25amz6djf3sxq
+                      name: 'DFW Wellness'
+                      cash_balance: 328.41
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T14:25:25.000000Z'
+                    -
+                      id: 01jxmtwr1yrcb25amz6djf3sxq
+                      name: 'DFW Wellness'
+                      cash_balance: 328.41
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T14:25:25.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtwr1yrcb25amz6djf3sxq
+                        name: 'DFW Wellness'
+                        cash_balance: 328.41
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T14:25:25.000000Z'
+                      -
+                        id: 01jxmtwr1yrcb25amz6djf3sxq
+                        name: 'DFW Wellness'
+                        cash_balance: 328.41
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T14:25:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtwr1yrcb25amz6djf3sxq
+                        name:
+                          type: string
+                          example: 'DFW Wellness'
+                        cash_balance:
+                          type: number
+                          example: 328.41
+                        created_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                    required:
+                      - id
+                      - name
+                      - cash_balance
+                      - created_at
+                      - updated_at
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Pharmacy
+      security: []
+  /api/pharmacies/search:
+    get:
+      summary: 搜尋藥局
+      operationId: ''
+      description: 透過藥局名稱、口罩價格、符合條件的口罩數量來搜尋藥局。
+      parameters:
+        -
+          in: query
+          name: mask_price_min
+          description: 限制口罩最低價格，最小為0。
+          example: 2.3
+          required: false
+          schema:
+            type: number
+            description: 限制口罩最低價格，最小為0。
+            example: 2.3
+            nullable: false
+        -
+          in: query
+          name: mask_price_max
+          description: '限制口罩最高價格，最小為0，若有傳遞 mask_price_min 則必須大於 mask_price_min。'
+          example: 13.6
+          required: false
+          schema:
+            type: number
+            description: '限制口罩最高價格，最小為0，若有傳遞 mask_price_min 則必須大於 mask_price_min。'
+            example: 13.6
+            nullable: false
+        -
+          in: query
+          name: mask_count_min
+          description: 限制符合條件的口罩最低數量，最小為0。
+          example: 1
+          required: false
+          schema:
+            type: integer
+            description: 限制符合條件的口罩最低數量，最小為0。
+            example: 1
+            nullable: false
+        -
+          in: query
+          name: mask_count_max
+          description: '限制符合條件的口罩最高數量，最小為0，若有傳遞 mask_count_min 則必須大於 mask_count_min。'
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: '限制符合條件的口罩最高數量，最小為0，若有傳遞 mask_count_min 則必須大於 mask_count_min。'
+            example: 10
+            nullable: false
+        -
+          in: query
+          name: name
+          description: 按口罩名稱搜尋，長度為1~50。
+          example: first
+          required: false
+          schema:
+            type: string
+            description: 按口罩名稱搜尋，長度為1~50。
+            example: first
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtwr1yrcb25amz6djf3sxq
+                      name: 'DFW Wellness'
+                      cash_balance: 328.41
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T14:25:25.000000Z'
+                    -
+                      id: 01jxmtwr1yrcb25amz6djf3sxq
+                      name: 'DFW Wellness'
+                      cash_balance: 328.41
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T14:25:25.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtwr1yrcb25amz6djf3sxq
+                        name: 'DFW Wellness'
+                        cash_balance: 328.41
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T14:25:25.000000Z'
+                      -
+                        id: 01jxmtwr1yrcb25amz6djf3sxq
+                        name: 'DFW Wellness'
+                        cash_balance: 328.41
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T14:25:25.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtwr1yrcb25amz6djf3sxq
+                        name:
+                          type: string
+                          example: 'DFW Wellness'
+                        cash_balance:
+                          type: number
+                          example: 328.41
+                        created_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                    required:
+                      - id
+                      - name
+                      - cash_balance
+                      - created_at
+                      - updated_at
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Pharmacy
+      security: []
+  '/api/pharmacies/{pharmacy_id}/masks':
+    get:
+      summary: 獲取某間藥局的口罩販售清單
+      operationId: ''
+      description: 根據藥局ID來獲取該藥局的口罩販售清單，可使用名稱或價格來排序。
+      parameters:
+        -
+          in: query
+          name: sort
+          description: '排序規則，以「-」開頭代表 desc。'
+          example: price
+          required: false
+          schema:
+            type: string
+            description: '排序規則，以「-」開頭代表 desc。'
+            example: price
+            nullable: false
+            enum:
+              - name
+              - '-name'
+              - price
+              - '-price'
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name:
+                          type: string
+                          example: 'True Barrier (green) (3 per pack)'
+                        price:
+                          type: number
+                          example: 13.7
+                        stock_quantity:
+                          type: integer
+                          example: 50
+                        created_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-13T17:51:10.000000Z'
+                    required:
+                      - id
+                      - name
+                      - price
+                      - stock_quantity
+                      - created_at
+                      - updated_at
+        404:
+          description: 藥局不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    -
+                      code: resource_not_found
+                      detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: resource_not_found
+                        detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: resource_not_found
+                        detail:
+                          type: string
+                          example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Pharmacy
+      security: []
+    parameters:
+      -
+        in: path
+        name: pharmacy_id
+        description: 'The ID of the pharmacy.'
+        example: 01jxmtwr1yrcb25amz6djf3sxq
+        required: true
+        schema:
+          type: string
+  '/api/pharmacies/{pharmacy_id}/masks/batch':
+    post:
+      summary: 批量新增或更新藥局口罩
+      operationId: ''
+      description: 一次對某間藥局新增或更新多筆口罩資訊
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name:
+                          type: string
+                          example: 'True Barrier (green) (3 per pack)'
+                        price:
+                          type: number
+                          example: 13.7
+                        stock_quantity:
+                          type: integer
+                          example: 50
+                        created_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-13T17:51:10.000000Z'
+                    required:
+                      - id
+                      - name
+                      - price
+                      - stock_quantity
+                      - created_at
+                      - updated_at
+        404:
+          description: 藥局或口罩不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    -
+                      code: resource_not_found
+                      detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: resource_not_found
+                        detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: resource_not_found
+                        detail:
+                          type: string
+                          example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Pharmacy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              description: '要新增或更新的口罩資訊，當有傳遞 id 時，則為更新。'
+              example:
+                -
+                  id: 01jxhbsskj2bnefbgfb4segeqg
+                  name: 'Second Smile (black) (10 per pack)'
+                  price: 12.4
+                  stock_quantity: 8
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: 口罩ID，當有傳遞時，則為更新。
+                    example: 01jxhbsskj2bnefbgfb4segeqg
+                    nullable: false
+                  name:
+                    type: string
+                    description: 口罩名稱，長度為1~100。
+                    example: 'Second Smile (black) (10 per pack)'
+                    nullable: false
+                  price:
+                    type: number
+                    description: 口罩價格，最小為0。
+                    example: 12.4
+                    nullable: false
+                  stock_quantity:
+                    type: integer
+                    description: 口罩庫存數量，最小為0。
+                    example: 8
+                    nullable: false
+                required:
+                  - name
+                  - price
+                  - stock_quantity
+      security: []
+    parameters:
+      -
+        in: path
+        name: pharmacy_id
+        description: 'The ID of the pharmacy.'
+        example: 01jxmtwr1yrcb25amz6djf3sxq
+        required: true
+        schema:
+          type: string
+  /api/masks/search:
+    get:
+      summary: 搜尋口罩
+      operationId: ''
+      description: 可以透過口罩名稱進行搜尋。
+      parameters:
+        -
+          in: query
+          name: name
+          description: 口罩名稱關鍵字，長度為1~100
+          example: green
+          required: false
+          schema:
+            type: string
+            description: 口罩名稱關鍵字，長度為1~100
+            example: green
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                    -
+                      id: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name: 'True Barrier (green) (3 per pack)'
+                      price: 13.7
+                      stock_quantity: 50
+                      created_at: '2025-06-13T14:25:25.000000Z'
+                      updated_at: '2025-06-13T17:51:10.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                      -
+                        id: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name: 'True Barrier (green) (3 per pack)'
+                        price: 13.7
+                        stock_quantity: 50
+                        created_at: '2025-06-13T14:25:25.000000Z'
+                        updated_at: '2025-06-13T17:51:10.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtwr2c08gp4rz3pga6ghs6
+                        name:
+                          type: string
+                          example: 'True Barrier (green) (3 per pack)'
+                        price:
+                          type: number
+                          example: 13.7
+                        stock_quantity:
+                          type: integer
+                          example: 50
+                        created_at:
+                          type: string
+                          example: '2025-06-13T14:25:25.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-13T17:51:10.000000Z'
+                    required:
+                      - id
+                      - name
+                      - price
+                      - stock_quantity
+                      - created_at
+                      - updated_at
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Mask
+      security: []
+  '/api/masks/{mask_id}':
+    patch:
+      summary: 更新口罩庫存數量
+      operationId: ''
+      description: ''
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    id: 01jxmtwr2c08gp4rz3pga6ghs6
+                    name: 'True Barrier (green) (3 per pack)'
+                    price: 13.7
+                    stock_quantity: 50
+                    created_at: '2025-06-13T14:25:25.000000Z'
+                    updated_at: '2025-06-13T17:51:10.000000Z'
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: 01jxmtwr2c08gp4rz3pga6ghs6
+                      name:
+                        type: string
+                        example: 'True Barrier (green) (3 per pack)'
+                      price:
+                        type: number
+                        example: 13.7
+                      stock_quantity:
+                        type: integer
+                        example: 50
+                      created_at:
+                        type: string
+                        example: '2025-06-13T14:25:25.000000Z'
+                      updated_at:
+                        type: string
+                        example: '2025-06-13T17:51:10.000000Z'
+                    required:
+                      - id
+                      - name
+                      - price
+                      - stock_quantity
+                      - created_at
+                      - updated_at
+        404:
+          description: 口罩不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    -
+                      code: resource_not_found
+                      detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: resource_not_found
+                        detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: resource_not_found
+                        detail:
+                          type: string
+                          example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - Mask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stock_quantity:
+                  type: integer
+                  description: 口罩庫存數量，最小為0。
+                  example: 50
+                  nullable: false
+              required:
+                - stock_quantity
+      security: []
+    parameters:
+      -
+        in: path
+        name: mask_id
+        description: 'The ID of the mask.'
+        example: 01jxmtwr2c08gp4rz3pga6ghs6
+        required: true
+        schema:
+          type: string
+  /api/users/top-spenders:
+    get:
+      summary: 取得高消費使用者
+      operationId: ''
+      description: '查詢特定時段口罩消費金額最高的 N 個使用者。'
+      parameters:
+        -
+          in: query
+          name: count
+          description: 查詢數量，最小為1，若沒傳遞則預設為10。
+          example: 10
+          required: false
+          schema:
+            type: integer
+            description: 查詢數量，最小為1，若沒傳遞則預設為10。
+            example: 10
+            nullable: false
+        -
+          in: query
+          name: start_datetime
+          description: '查詢開始時間，格式為 ISO 8601。'
+          example: '2024-06-10T06:40:53.000000Z'
+          required: true
+          schema:
+            type: string
+            description: '查詢開始時間，格式為 ISO 8601。'
+            example: '2024-06-10T06:40:53.000000Z'
+            nullable: false
+        -
+          in: query
+          name: end_datetime
+          description: '查詢結束時間，格式為 ISO 8601，時間必須大於 start_datetime。'
+          example: '2025-06-21T06:40:53.000000Z'
+          required: true
+          schema:
+            type: string
+            description: '查詢結束時間，格式為 ISO 8601，時間必須大於 start_datetime。'
+            example: '2025-06-21T06:40:53.000000Z'
+            nullable: false
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxhbsm77aaa2arkz3gsb5vrw
+                      name: 'Wilbert Love'
+                      cash_balance: 587.93
+                      created_at: '2025-06-12T06:03:50.000000Z'
+                      updated_at: '2025-06-12T10:02:42.000000Z'
+                      total_spending: 412.07
+                    -
+                      id: 01jxhbskw2dpz2wbnv1r8rhpew
+                      name: 'Yvonne Guerrero'
+                      cash_balance: 42.67
+                      created_at: '2025-06-12T06:03:50.000000Z'
+                      updated_at: '2025-06-12T08:33:50.000000Z'
+                      total_spending: 211.26
+                    -
+                      id: 01jxhbskx8hwjvqj3cbfy715e5
+                      name: 'Lester Arnold'
+                      cash_balance: 234.84
+                      created_at: '2025-06-12T06:03:50.000000Z'
+                      updated_at: '2025-06-12T06:03:50.000000Z'
+                      total_spending: 165.16
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxhbsm77aaa2arkz3gsb5vrw
+                        name: 'Wilbert Love'
+                        cash_balance: 587.93
+                        created_at: '2025-06-12T06:03:50.000000Z'
+                        updated_at: '2025-06-12T10:02:42.000000Z'
+                        total_spending: 412.07
+                      -
+                        id: 01jxhbskw2dpz2wbnv1r8rhpew
+                        name: 'Yvonne Guerrero'
+                        cash_balance: 42.67
+                        created_at: '2025-06-12T06:03:50.000000Z'
+                        updated_at: '2025-06-12T08:33:50.000000Z'
+                        total_spending: 211.26
+                      -
+                        id: 01jxhbskx8hwjvqj3cbfy715e5
+                        name: 'Lester Arnold'
+                        cash_balance: 234.84
+                        created_at: '2025-06-12T06:03:50.000000Z'
+                        updated_at: '2025-06-12T06:03:50.000000Z'
+                        total_spending: 165.16
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxhbsm77aaa2arkz3gsb5vrw
+                        name:
+                          type: string
+                          example: 'Wilbert Love'
+                        cash_balance:
+                          type: number
+                          example: 587.93
+                        created_at:
+                          type: string
+                          example: '2025-06-12T06:03:50.000000Z'
+                        updated_at:
+                          type: string
+                          example: '2025-06-12T10:02:42.000000Z'
+                        total_spending:
+                          type: number
+                          example: 412.07
+                    required:
+                      - id
+                      - name
+                      - cash_balance
+                      - created_at
+                      - updated_at
+                      - total_spending
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - User
+      security: []
+  '/api/users/{user_id}/purchases':
+    post:
+      summary: 使用者購買
+      operationId: ''
+      description: 使用者可同時購買多家藥局的口罩
+      parameters: []
+      responses:
+        200:
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  data:
+                    -
+                      id: 01jxmtw7p4fdcs0jg22hxfdbga
+                      pharmacy_name: 'Keystone Pharmacy'
+                      mask_name: 'True Barrier (green) (3 per pack)'
+                      transaction_amount: 11.86
+                      transaction_quantity: 1
+                      transaction_datetime: '2024-12-24T15:18:51.000000Z'
+                    -
+                      id: 01jxmtw7p4fdcs0jg22hxfdbga
+                      pharmacy_name: 'Keystone Pharmacy'
+                      mask_name: 'True Barrier (green) (3 per pack)'
+                      transaction_amount: 11.86
+                      transaction_quantity: 1
+                      transaction_datetime: '2024-12-24T15:18:51.000000Z'
+                properties:
+                  data:
+                    type: array
+                    example:
+                      -
+                        id: 01jxmtw7p4fdcs0jg22hxfdbga
+                        pharmacy_name: 'Keystone Pharmacy'
+                        mask_name: 'True Barrier (green) (3 per pack)'
+                        transaction_amount: 11.86
+                        transaction_quantity: 1
+                        transaction_datetime: '2024-12-24T15:18:51.000000Z'
+                      -
+                        id: 01jxmtw7p4fdcs0jg22hxfdbga
+                        pharmacy_name: 'Keystone Pharmacy'
+                        mask_name: 'True Barrier (green) (3 per pack)'
+                        transaction_amount: 11.86
+                        transaction_quantity: 1
+                        transaction_datetime: '2024-12-24T15:18:51.000000Z'
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          example: 01jxmtw7p4fdcs0jg22hxfdbga
+                        pharmacy_name:
+                          type: string
+                          example: 'Keystone Pharmacy'
+                        mask_name:
+                          type: string
+                          example: 'True Barrier (green) (3 per pack)'
+                        transaction_amount:
+                          type: number
+                          example: 11.86
+                        transaction_quantity:
+                          type: integer
+                          example: 1
+                        transaction_datetime:
+                          type: string
+                          example: '2024-12-24T15:18:51.000000Z'
+                    required:
+                      - id
+                      - pharmacy_name
+                      - mask_name
+                      - transaction_amount
+                      - transaction_quantity
+                      - transaction_datetime
+        402:
+          description: 現金餘額不足
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 現金餘額不足
+                  errors:
+                    -
+                      code: insufficient_cash_balance
+                      detail: 現金餘額不足
+                properties:
+                  message:
+                    type: string
+                    example: 現金餘額不足
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: insufficient_cash_balance
+                        detail: 現金餘額不足
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: insufficient_cash_balance
+                        detail:
+                          type: string
+                          example: 現金餘額不足
+        404:
+          description: 使用者不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    -
+                      code: resource_not_found
+                      detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                properties:
+                  message:
+                    type: string
+                    example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: resource_not_found
+                        detail: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: resource_not_found
+                        detail:
+                          type: string
+                          example: 'No query results for model [App\Models\Pharmacy] 01jxhbssmppr3erceewt6nhhh4'
+        409:
+          description: 庫存不足
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 庫存不足
+                  errors:
+                    -
+                      code: insufficient_stock
+                      detail: 庫存不足
+                properties:
+                  message:
+                    type: string
+                    example: 庫存不足
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: insufficient_stock
+                        detail: 庫存不足
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: insufficient_stock
+                        detail:
+                          type: string
+                          example: 庫存不足
+        422:
+          description: 參數格式錯誤
+          content:
+            application/json:
+              schema:
+                type: object
+                example:
+                  message: 'The stock quantity field must be an integer.'
+                  errors:
+                    -
+                      code: invalid_format
+                      detail: 'The stock quantity field must be an integer.'
+                properties:
+                  message:
+                    type: string
+                    example: 'The stock quantity field must be an integer.'
+                  errors:
+                    type: array
+                    example:
+                      -
+                        code: invalid_format
+                        detail: 'The stock quantity field must be an integer.'
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: string
+                          example: invalid_format
+                        detail:
+                          type: string
+                          example: 'The stock quantity field must be an integer.'
+      tags:
+        - User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              description: 購買清單
+              example:
+                -
+                  mask_id: 01jxhbsswdpmmf5fgxv3h95egj
+                  quantity: 4
+              items:
+                type: object
+                properties:
+                  mask_id:
+                    type: string
+                    description: 口罩ID
+                    example: 01jxhbsswdpmmf5fgxv3h95egj
+                    nullable: false
+                  quantity:
+                    type: integer
+                    description: 購買數量，最小為1。
+                    example: 4
+                    nullable: false
+                required:
+                  - mask_id
+                  - quantity
+      security: []
+    parameters:
+      -
+        in: path
+        name: user_id
+        description: 'The ID of the user.'
+        example: 01jxmtw7nx7xthh9p7ha4bdkd2
+        required: true
+        schema:
+          type: string
