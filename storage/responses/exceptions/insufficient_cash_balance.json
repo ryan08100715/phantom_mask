@@ -1,0 +1,9 @@
+{
+    "message": "現金餘額不足",
+    "errors": [
+        {
+            "code": "insufficient_cash_balance",
+            "detail": "現金餘額不足"
+        }
+    ]
+}

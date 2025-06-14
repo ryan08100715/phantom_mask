@@ -175,3 +175,204 @@ endpoints:
     method: null
     route: null
     custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/users/{user_id}/purchases'
+    metadata:
+      groupName: User
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 使用者購買
+      description: 使用者可同時購買多家藥局的口罩
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      user_id:
+        name: user_id
+        description: 'The ID of the user.'
+        required: true
+        example: 01jxmtw7nx7xthh9p7ha4bdkd2
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      user_id: 01jxmtw7nx7xthh9p7ha4bdkd2
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      '[]':
+        name: '[]'
+        description: 購買清單
+        required: true
+        example:
+          - []
+        type: 'object[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].mask_id':
+        name: '[].mask_id'
+        description: 口罩ID
+        required: true
+        example: 01jxhbsswdpmmf5fgxv3h95egj
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      '[].quantity':
+        name: '[].quantity'
+        description: 購買數量，最小為1。
+        required: true
+        example: 4
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      -
+        mask_id: 01jxhbsswdpmmf5fgxv3h95egj
+        quantity: 4
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":"01jxmtw7p4fdcs0jg22hxfdbga","pharmacy_name":"Keystone Pharmacy","mask_name":"True Barrier (green) (3 per pack)","transaction_amount":11.86,"transaction_quantity":1,"transaction_datetime":"2024-12-24T15:18:51.000000Z"},{"id":"01jxmtw7p4fdcs0jg22hxfdbga","pharmacy_name":"Keystone Pharmacy","mask_name":"True Barrier (green) (3 per pack)","transaction_amount":11.86,"transaction_quantity":1,"transaction_datetime":"2024-12-24T15:18:51.000000Z"}]}'
+        headers: []
+        description: ''
+        custom: []
+      -
+        status: 402
+        content: |
+          {
+              "message": "現金餘額不足",
+              "errors": [
+                  {
+                      "code": "insufficient_cash_balance",
+                      "detail": "現金餘額不足"
+                  }
+              ]
+          }
+        headers: []
+        description: 現金餘額不足
+        custom: []
+      -
+        status: 404
+        content: |
+          {
+              "message": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4",
+              "errors": [
+                  {
+                      "code": "resource_not_found",
+                      "detail": "No query results for model [App\\Models\\Pharmacy] 01jxhbssmppr3erceewt6nhhh4"
+                  }
+              ]
+          }
+        headers: []
+        description: 使用者不存在
+        custom: []
+      -
+        status: 409
+        content: |
+          {
+              "message": "庫存不足",
+              "errors": [
+                  {
+                      "code": "insufficient_stock",
+                      "detail": "庫存不足"
+                  }
+              ]
+          }
+        headers: []
+        description: 庫存不足
+        custom: []
+      -
+        status: 422
+        content: |
+          {
+              "message": "The stock quantity field must be an integer.",
+              "errors": [
+                  {
+                      "code": "invalid_format",
+                      "detail": "The stock quantity field must be an integer."
+                  }
+              ]
+          }
+        headers: []
+        description: 參數格式錯誤
+        custom: []
+    responseFields:
+      id:
+        name: id
+        description: 使用者ID
+        required: true
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      pharmacy_name:
+        name: pharmacy_name
+        description: 藥局名稱
+        required: true
+        example: 'DFW Wellness'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      mask_name:
+        name: mask_name
+        description: 口罩名稱
+        required: true
+        example: 'MaskT (green) (6 per pack)'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      transaction_amount:
+        name: transaction_amount
+        description: 交易金額
+        required: true
+        example: 12.4
+        type: number
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      transaction_quantity:
+        name: transaction_quantity
+        description: 交易數量
+        required: true
+        example: 5
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      transaction_datetime:
+        name: transaction_datetime
+        description: '交易時間，格式為 ISO 8601'
+        required: true
+        example: '2025-06-10T06:40:53.000000Z'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

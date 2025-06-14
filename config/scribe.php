@@ -140,7 +140,7 @@ return [
 }
 ```
 
-<aside>當有錯誤發生時，會包含 errors 參數，errors 有可能為多個，每個 error 都有 code 可以進行程式判斷。</aside>
+<aside>當有錯誤發生時，會包含 errors 參數，errors 可能包含多個 error，每個 error 都有 code 可以進行程式判斷。</aside>
 
 <h2>錯誤代碼清單</h2>
 
@@ -148,6 +148,8 @@ return [
 |  ----  | ----  |
 | resource_not_found  | 查無資源 |
 | invalid_format  | 參數格式錯誤 |
+| insufficient_cash_balance  | 現金餘額不足 |
+| insufficient_stock  | 庫存不足 |
 | server_error  | 未知錯誤 |
 
 INTRO,

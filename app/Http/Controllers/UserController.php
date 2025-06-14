@@ -12,6 +12,7 @@ use App\Services\UserService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\ResponseField;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 use Knuckles\Scribe\Attributes\ResponseFromFile;
 
 #[Group('User')]
@@ -65,6 +66,11 @@ class UserController extends Controller
      *
      * 使用者可同時購買多家藥局的口罩
      */
+    #[ResponseFromApiResource(UserPurchaseHistoryResource::class, UserPurchaseHistory::class, 200, collection: true)]
+    #[ResponseFromFile('storage/responses/exceptions/resource_not_found.json', status: 404, description: '使用者不存在')]
+    #[ResponseFromFile('storage/responses/exceptions/invalid_format.json', status: 422, description: '參數格式錯誤')]
+    #[ResponseFromFile('storage/responses/exceptions/insufficient_cash_balance.json', status: 402, description: '現金餘額不足')]
+    #[ResponseFromFile('storage/responses/exceptions/insufficient_stock.json', status: 409, description: '庫存不足')]
     public function purchase(UserPurchaseRequest $request, User $user): ResourceCollection
     {
         // 獲取請求參數

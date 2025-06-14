@@ -1,0 +1,9 @@
+{
+    "message": "庫存不足",
+    "errors": [
+        {
+            "code": "insufficient_stock",
+            "detail": "庫存不足"
+        }
+    ]
+}
