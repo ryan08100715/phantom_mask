@@ -13,3 +13,4 @@ Route::get('/masks/search', [MaskController::class, 'search']);
 Route::patch('/masks/{mask}', [MaskController::class, 'update']);
 
 Route::get('/users/top-spenders', [UserController::class, 'getTopSpenders']);
+Route::post('/users/{user}/purchases', [UserController::class, 'purchase']);

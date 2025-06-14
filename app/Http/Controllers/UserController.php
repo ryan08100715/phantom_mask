@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\GetTopSpendersRequest;
+use App\Http\Requests\UserPurchaseRequest;
+use App\Http\Resources\UserPurchaseHistoryResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserPurchaseHistory;
+use App\Services\UserService;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\ResponseField;
@@ -14,6 +17,10 @@ use Knuckles\Scribe\Attributes\ResponseFromFile;
 #[Group('User')]
 class UserController extends Controller
 {
+    public function __construct(
+        private readonly UserService $userService,
+    ) {}
+
     /**
      * 取得高消費使用者
      *
@@ -51,5 +58,20 @@ class UserController extends Controller
             ->get();
 
         return UserResource::collection($users);
+    }
+
+    /**
+     * 使用者購買
+     *
+     * 使用者可同時購買多家藥局的口罩
+     */
+    public function purchase(UserPurchaseRequest $request, User $user): ResourceCollection
+    {
+        // 獲取請求參數
+        $purchaseData = $request->validated();
+
+        $purchaseHistories = $this->userService->purchase($user->id, $purchaseData);
+
+        return UserPurchaseHistoryResource::collection($purchaseHistories);
     }
 }
