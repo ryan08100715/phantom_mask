@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Pharmacy;
+use App\Models\PharmacyMask;
 use App\Models\User;
 use App\Models\UserPurchaseHistory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -122,5 +124,177 @@ describe('取得高消費使用者', function () {
         $response
             ->assertStatus(422)
             ->assertJsonFragment(['code' => 'invalid_format']);
+    });
+});
+
+describe('使用者購買', function () {
+    beforeEach(function () {
+        // 創建測試使用者
+        $this->user = User::factory()->create([
+            'cash_balance' => '1000.00',
+        ]);
+
+        // 創建測試藥局和口罩
+        $this->pharmacy = Pharmacy::factory()->create();
+        $this->masks = PharmacyMask::factory()->count(2)->for($this->pharmacy)->create([
+            'price' => '10.00',
+            'stock_quantity' => 100,
+        ]);
+    });
+
+    test('可以成功購買口罩', function () {
+        // Arrange
+        $purchaseData = [
+            [
+                'mask_id' => $this->masks[0]->id,
+                'quantity' => 2,
+            ],
+            [
+                'mask_id' => $this->masks[1]->id,
+                'quantity' => 3,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response
+            ->assertOk()
+            ->assertJsonCount(2, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'id',
+                        'pharmacy_name',
+                        'mask_name',
+                        'transaction_amount',
+                        'transaction_quantity',
+                        'transaction_datetime',
+                    ],
+                ],
+            ]);
+
+        // 驗證庫存是否正確更新
+        $this->assertEquals(98, $this->masks[0]->fresh()->stock_quantity);
+        $this->assertEquals(97, $this->masks[1]->fresh()->stock_quantity);
+
+        // 驗證消費紀錄是否正確添加
+        $this->assertDatabaseHas('user_purchase_histories', [
+            'user_id' => $this->user->id,
+            'pharmacy_name' => $this->pharmacy->name,
+            'mask_name' => $this->masks[0]->name,
+            'transaction_quantity' => 2,
+        ]);
+        $this->assertDatabaseHas('user_purchase_histories', [
+            'user_id' => $this->user->id,
+            'pharmacy_name' => $this->pharmacy->name,
+            'mask_name' => $this->masks[1]->name,
+            'transaction_quantity' => 3,
+        ]);
+
+        // 驗證使用者餘額是否正確扣除
+        $this->assertEquals('950.00', $this->user->fresh()->cash_balance);
+    });
+
+    test('現金餘額不足時無法購買', function () {
+        // Arrange
+        $this->user->update(['cash_balance' => '10.00']);
+        $purchaseData = [
+            [
+                'mask_id' => $this->masks[0]->id,
+                'quantity' => 2,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response
+            ->assertStatus(402)
+            ->assertJsonFragment(['code' => 'insufficient_cash_balance']);
+
+        // 驗證庫存和餘額沒有變動
+        $this->assertEquals(100, $this->masks[0]->fresh()->stock_quantity);
+        $this->assertEquals('10.00', $this->user->fresh()->cash_balance);
+    });
+
+    test('庫存不足時無法購買', function () {
+        // Arrange
+        $purchaseData = [
+            [
+                'mask_id' => $this->masks[0]->id,
+                'quantity' => 101,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response
+            ->assertStatus(409)
+            ->assertJsonFragment(['code' => 'insufficient_stock']);
+    });
+
+    test('購買數量必須為正整數', function () {
+        // Arrange
+        $purchaseData = [
+            [
+                'mask_id' => $this->masks[0]->id,
+                'quantity' => -1,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response
+            ->assertStatus(422)
+            ->assertJsonFragment(['code' => 'invalid_format']);
+    });
+
+    test('不存在的口罩ID無法購買', function () {
+        // Arrange
+        $purchaseData = [
+            [
+                'mask_id' => 'non_existent_id',
+                'quantity' => 1,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response
+            ->assertStatus(422)
+            ->assertJsonFragment(['code' => 'invalid_format']);
+    });
+
+    test('購買記錄應包含正確的交易資訊', function () {
+        // Arrange
+        $purchaseData = [
+            [
+                'mask_id' => $this->masks[0]->id,
+                'quantity' => 2,
+            ],
+        ];
+
+        // Act
+        $response = $this->postJson("/api/users/{$this->user->id}/purchases", $purchaseData);
+
+        // Assert
+        $response->assertOk();
+
+        $this->assertDatabaseHas('user_purchase_histories', [
+            'user_id' => $this->user->id,
+            'pharmacy_name' => $this->pharmacy->name,
+            'mask_name' => $this->masks[0]->name,
+            'transaction_amount' => '20.00',
+            'transaction_quantity' => 2,
+        ]);
     });
 });
