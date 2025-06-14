@@ -31,6 +31,9 @@
 有三種 API 文件：
 
 1. 啟動服務後，瀏覽 `/docs` 路徑 (例如: `http://localhost:8000/docs`)
+
+   文檔內的 Base URL 預設為 `http://localhost:8000`，如果你的服務不是啟動在 8000 port，則可以編輯 `.env` 的 `APP_URL` 後在執行
+   `php artisan scribe:generate` 重新生成文檔。
 2. [postman collection](docs/docs.postman)：可將該檔案 import 進 postman 使用
 3. [openapi](docs/docs.openapi.yaml)：可以使用 openapi 閱讀器觀看。(例如：[swagger editor](https://editor.swagger.io/))
 
@@ -127,7 +130,7 @@ $ composer install
 #### 資料庫建置
 
 ```bash
-$ php artisan migrate
+$ php artisan migrate --force
 ```
 
 #### 導入資料
